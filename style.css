@@ -1,0 +1,158 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+body{
+    font-family: 'Noto Sans TC', sans-serif;
+    font-family: 'Nunito', sans-serif;
+    background-color: #5E8558;
+    min-height: 100vh;
+    width: 100%;
+}
+header{
+    background-color: #ccc376;
+    background-image: url(./digital-paper-6052705_1920.png);  
+    box-shadow: rgba(43, 43, 43, 0.5) 1px 5px 10px;
+    min-height: 35vh;
+    width: 100%;
+    display: flex;
+}
+section{
+    width: 90%;
+    text-align: center;
+    margin: auto;
+}
+h1{
+    color: #5E8558;
+    font-size: 2rem;
+    margin: 0 20px 20px;
+}
+form{
+    display: flex;
+}
+form .addInput{
+    flex: 1;
+    background-color: #fff;
+    color: rgb(68, 68, 68);
+}
+.addInput,
+.addBtn{
+    color: #fff;
+    padding: .5rem;
+    border: none;
+    background-color:#5E8558;
+    font-size: 1.5rem;
+}
+::-webkit-input-placeholder { color: #CCC376; }
+input::-moz-placeholder { color: #CCC376; }
+.addInput,
+.addBtn:focus{
+    outline: none;
+}
+.addBtn{
+    cursor: pointer;
+    transition: all .5s ease;
+}
+.content{
+    width: 90%;
+    margin: auto;
+}
+.todo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(68, 68, 68);
+    font-size: 1rem;
+    margin: 0 auto 1rem;
+    padding: 0 .5rem;
+    background-color:rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: rgba(43, 43, 43, 0.5) 1px 5px 10px;
+    transition: all .5s ease;
+}
+li{
+    flex: 1;
+    padding: .5rem;
+    /* word-wrap:break-word; */
+    word-break: break-all;
+}
+.fa-check,
+.fa-times{
+    pointer-events: none;
+    line-height: 30px;
+    text-align: center;
+}
+.complete, .trash{
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 100%;
+    background-color: transparent;
+    color: #E15858;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin: .5rem;
+}
+.complete{
+    background-color: transparent;
+    color: #6ab04c;
+}
+.completed{
+    text-decoration: line-through;
+    opacity: .5;
+}
+.right{
+    transform: translateX(10rem) rotateZ(10deg);
+    opacity: 0;
+}
+.select{
+    width: 90%;
+    margin: auto;
+    color: #CCC376;
+    font-weight: bold;
+}
+.radioform{
+    margin: 1rem 0;
+}
+.radioform input[type="radio"]{
+    opacity: 0;
+    margin-right: -10px;
+}
+.radioform label{
+	display: inline-block;
+    padding: 3px 6px;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+}
+.radioform input:checked+label{
+    border-bottom: 4px solid #CCC376;
+}
+
+@media (min-width: 576px) {
+    section{
+        width: 60%;
+    }
+    .select{
+        display: flex;
+        justify-content: center;
+    }
+    #todos{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .todo{
+        margin: 1rem;
+    }
+}
+@media (min-width: 768px) {}
+@media (min-width: 1200px) {
+    section{
+        width: 40%;
+    }
+    .content{
+        width: 70%;
+    }
+}

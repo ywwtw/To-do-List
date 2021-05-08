@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&family=Nunito:ital@1&display=swap" rel="stylesheet">    
+    <title>Todo List</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header>
+    <section>
+        <h1>To-do List</h1>
+        <form action="" id="add-todo-form" class="add-todo-form">
+            <input type="text" id="addInput" class="addInput" placeholder="請輸入代辦事項...">
+            <button type="submit" id="addBtn" class="addBtn"><i class="fas fa-plus"></i></button>
+        </form>
+    </section> 
+</header>
+<div class="select">
+    <form class="radioform">
+        <input type="radio" name="filterOption" id="all" onchange="filterTodo(this.value)" value="all" checked>
+        <label for="all">全部</label>
+        <input type="radio" name="filterOption" id="completed" onchange="filterTodo(this.value)" value="completed">
+        <label for="completed">已完成</label>
+        <input type="radio" name="filterOption" id="unCompleted" onchange="filterTodo(this.value)" value="unCompleted">     
+        <label for="unCompleted">未完成</label>
+    </form>
+        
+</div>
+
+<div class="content">
+    <ul id="todos"></ul>
+</div>
+
+<script src="./app.js"></script>
+
+</body>
+</html>
