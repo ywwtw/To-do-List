@@ -1,92 +1,85 @@
-const input = document.getElementById("addInput"),
-        btn = document.getElementById("addBtn"),
-        todoList = document.getElementById("todos");
+const vm = Vue.createApp({})
 
-btn.addEventListener("click",function(e){
-    e.preventDefault();
-    const todo= input.value;
-    new TodoItem(todo);
-    updateToLocalStorage(todo);
-});
-
-let todos;
-todos=JSON.parse(localStorage.getItem("todos"))||[];
-todos.forEach(function(todo){
-    new TodoItem(todo);
-})     
-
-function TodoItem(todo){
-    if(todo!=""){
-        const todoDiv = document.createElement("div");
-        todoDiv.classList.add("todo");
-        todoList.appendChild(todoDiv);
-
-        const newTodo = document.createElement("li");
-        newTodo.classList.add("new");
-        newTodo.innerText=todo;
-        todoDiv.appendChild(newTodo);
-
-        const completeBtn = document.createElement("button");
-        completeBtn.innerHTML = '<i class="fas fa-check"></i>';
-        completeBtn.classList.add("complete");
-        todoDiv.appendChild(completeBtn);
-
-        const trashBtn = document.createElement("button");
-        trashBtn.innerHTML = '<i class="fas fa-times"></i>';
-        trashBtn.classList.add("trash");
-        todoDiv.appendChild(trashBtn);
-    }
-    input.value="";
-}
-
-todoList.addEventListener("click",function(e){ 
-    const item =e.target;
-    const todoE = item.parentElement;
-    if(item.classList[0]==="trash"){
-        todoE.classList.add("right");
-        todoE.addEventListener("transitionend",function(){
-        todoE.remove();
-        });
-    if(todos.indexOf(todoE.innerText)>-1){
-        todos.splice(todos.indexOf(todoE.innerText),1);
-        localStorage.setItem("todos",JSON.stringify(todos));
-    }}      
-    if(item.classList[0]==="complete"){
-        todoE.classList.toggle("completed");
+vm.component("my-component",{
+    template:`
+    <div v-bind="$attrs">
+        <header>
+        <section>
+            <h1>To-do List</h1>
+            <form @submit.prevent="addTodo" id="add-todo-form" class="add-todo-form">
+                <input type="text" v-model="newTodo" id="addInput" class="addInput" placeholder="請輸入代辦事項...">
+                <button type="submit" class="addBtn"><i class="fas fa-plus"></i></button>
+            </form>
+        </section> 
+        </header>
+        <div class="select">
+            <form class="radioform">
+                <input type="radio" id="all" @click="filter='all'">
+                <label for="all" :class="{active:filter==='all'}">全部</label>
+                <input type="radio" id="completed" @click="filter='completed'">
+                <label for="completed" :class="{active : filter==='completed'}">已完成</label>
+                <input type="radio" id="incompleted" @click=" filter='incompleted'">     
+                <label for="incompleted" :class="{active:filter==='incompleted'}">未完成</label>
+            </form>
+        </div>
+        <div class="content">
+            <h3 v-if="!todos.length" class="null">沒有待辦事項</h3>
+            <ul id="todoList">
+                <li v-for="todo in todosFiltered" class="todo">
+                    <span :class="{completed:todo.done}">{{todo.title}}</span>
+                    <input type="checkbox" v-model="todo.done"><i class="fas fa-check complete"></i>
+                    <button @click="removeTodo(todo)" type="button" class="trash"><i class="fas fa-times"></i></button>
+                </li>
+            </ul>
+        </div>
+    </div> 
+    `,
+    data(){
+        return{
+            newTodo:"",
+            todos:[],
+            filter: 'all'
+        }
+    },
+    mounted(){
+        if(localStorage.todoList){
+            this.todos=JSON.parse(localStorage.todoList)
+        }
+    },
+    watch: {
+        todos: {
+        handler() {
+            console.log('todoList changed')
+            localStorage.setItem("todoList", JSON.stringify(this.todos))
+          },
+          deep: true
+        },
+    },
+    computed: {
+        todosFiltered () {
+            if(this.filter ==='all'){
+                return this.todos
+            }else if(this.filter==='completed'){
+                return this.todos.filter(todo=> todo.done)
+            }else{
+                return this.todos.filter(todo=> !todo.done)  
+            }
+        }
+    },
+    methods:{
+        addTodo(){
+            // this.keydown= true;
+            if(this.newTodo.trim()!=""){
+            this.todos.push({
+                title:this.newTodo,
+                done:false,
+            })
+            console.log(this.todos);
+            this.newTodo=""}
+        },
+        removeTodo(index){
+            this.todos.splice(index,1)
+        }
     }
 })
-
-function updateToLocalStorage(todo){
-    if(localStorage.getItem("todos")==null){
-        todos=[];}     
-    todos.push(todo);
-    localStorage.setItem("todos",JSON.stringify(todos));
-}
-
-function filterTodo(x) {
-    let todoStatus=document.querySelectorAll("label input");
-    const alltodo = todoList.childNodes;
-    switch(x) {
-        case 'all':
-            alltodo.forEach(function(todo){
-            todo.style.display="flex";
-            })
-            break;
-        case 'completed':
-            alltodo.forEach(function(todo){
-                if(todo.classList.contains("completed")){
-                    todo.style.display="flex";
-                }else{
-                    todo.style.display="none";
-                }})
-                break;
-        case 'unCompleted':
-            alltodo.forEach(function(todo){
-            if(!todo.classList.contains("completed")){
-                todo.style.display="flex";
-            }else{
-                todo.style.display="none";
-            }
-        })
-    }
-}
+vm.mount('#app');
